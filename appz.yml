@@ -1,0 +1,28 @@
+app:
+    name: vkyc-rabbitmq
+    code: VKYC-RABBITMQ
+    notify: srswain@ecloudcontrol.com
+build:
+    version: 3.8
+    env: PROD
+    build_file: none
+    output_files: output/*.zip
+    image_template: rabbitmq-3.8
+deploy:
+    context: cloudorbit/PROD
+    replicas: 1
+    type: statefulset
+    port:
+    - 15672
+    - 5672
+volumes:
+  - claim: rabbitmq-data
+    mount: /appz/data
+    name: data
+    size: 10Gi
+properties:
+    BASE_URL: http://localhost:15672
+    RABBITMQ_DEFAULT_USER: admin
+    RABBITMQ_DEFAULT_PASS:
+       vault: RABBITMQ_DEFAULT_PASS
+    revision : 0
